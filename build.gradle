@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'checkstyle'   // 추가
+}
+
+checkstyle {
+    toolVersion = '10.12.17'
+    configFile = file('config/checkstyle/google_checks.xml')
+    ignoreFailures = false
+    showViolations = true
+}
+
+// 테스트 코드는 Checkstyle 검사 제외
+checkstyleTest {
+    enabled = false
+}
+group = 'org.sixman'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:6.0.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}

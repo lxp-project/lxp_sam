@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!--
+  Google Java Style Guide 기반 Checkstyle 설정
+  참고: https://google.github.io/styleguide/javaguide.html
+-->
+<module name="Checker">
+  <property name="charset" value="UTF-8"/>
+  <property name="severity" value="error"/>
+  <property name="fileExtensions" value="java"/>
+
+  <!-- 파일 길이: 최대 1500줄 -->
+  <module name="FileLength">
+    <property name="max" value="1500"/>
+  </module>
+
+  <!-- 줄 끝 공백 금지 -->
+  <module name="RegexpSingleline">
+    <property name="format" value="\s+$"/>
+    <property name="minimum" value="0"/>
+    <property name="maximum" value="0"/>
+    <message key="regexp.exceeded" value="줄 끝에 공백이 있습니다."/>
+  </module>
+
+  <!-- 한 줄 최대 100자 -->
+  <module name="LineLength">
+    <property name="max" value="100"/>
+    <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://"/>
+    <message key="maxLineLength" value="한 줄은 100자를 초과할 수 없습니다."/>
+  </module>
+
+  <module name="TreeWalker">
+
+    <!-- ==============================
+         Import 규칙
+         ============================== -->
+
+    <!-- import * 사용 금지 -->
+    <module name="AvoidStarImport"/>
+    <!-- 사용하지 않는 import 금지 -->
+    <module name="UnusedImports"/>
+    <!-- 중복 import 금지 -->
+    <module name="RedundantImport"/>
+
+    <!-- ==============================
+         네이밍 규칙
+         ============================== -->
+
+    <!-- 클래스명: PascalCase -->
+    <module name="TypeName">
+      <property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
+      <message key="name.invalidPattern" value="클래스명은 PascalCase로 작성하세요. (예: UserService)"/>
+    </module>
+
+    <!-- 메서드명: camelCase -->
+    <module name="MethodName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+      <message key="name.invalidPattern" value="메서드명은 camelCase로 작성하세요. (예: getUserById)"/>
+    </module>
+
+    <!-- 변수명: camelCase -->
+    <module name="LocalVariableName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+      <message key="name.invalidPattern" value="변수명은 camelCase로 작성하세요. (예: userName)"/>
+    </module>
+
+    <!-- 파라미터명: camelCase -->
+    <module name="ParameterName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+      <message key="name.invalidPattern" value="파라미터명은 camelCase로 작성하세요."/>
+    </module>
+
+    <!-- 상수명: UPPER_SNAKE_CASE -->
+    <module name="ConstantName">
+      <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+      <message key="name.invalidPattern" value="상수명은 UPPER_SNAKE_CASE로 작성하세요. (예: MAX_RETRY_COUNT)"/>
+    </module>
+
+    <!-- 멤버 변수명: camelCase -->
+    <module name="MemberName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+      <message key="name.invalidPattern" value="멤버 변수명은 camelCase로 작성하세요."/>
+    </module>
+
+    <!-- 패키지명: 소문자 -->
+    <module name="PackageName">
+      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+      <message key="name.invalidPattern" value="패키지명은 소문자로 작성하세요. (예: com.example.project)"/>
+    </module>
+
+    <!-- ==============================
+         줄 길이 및 공백 규칙
+         ============================== -->
+
+
+
+    <!-- 키워드 뒤 공백 (if, for, while 등) -->
+    <module name="WhitespaceAfter"/>
+
+    <!-- 불필요한 공백 금지 -->
+    <module name="NoWhitespaceBefore"/>
+
+    <!-- ==============================
+         중괄호 규칙
+         ============================== -->
+
+    <!-- 여는 중괄호: 같은 줄에 -->
+    <module name="LeftCurly"/>
+
+    <!-- 닫는 중괄호 위치 -->
+    <module name="RightCurly"/>
+
+    <!-- 중괄호 생략 금지 (if/for/while 모두 중괄호 필수) -->
+    <module name="NeedBraces">
+      <message key="needBraces" value="if/for/while/do 블록에는 반드시 중괄호를 사용하세요."/>
+    </module>
+
+    <!-- ==============================
+         코드 품질 규칙
+         ============================== -->
+
+    <!-- 빈 catch 블록 금지 -->
+    <module name="EmptyCatchBlock">
+      <property name="exceptionVariableName" value="expected|ignore"/>
+    </module>
+
+    <!-- 메서드 길이: 최대 60줄 -->
+    <module name="MethodLength">
+      <property name="max" value="60"/>
+      <message key="maxLen.method" value="메서드는 60줄을 초과할 수 없습니다. 메서드를 분리하세요."/>
+    </module>
+
+    <!-- 파라미터 개수: 최대 7개 -->
+    <module name="ParameterNumber">
+      <property name="max" value="7"/>
+      <message key="maxParam" value="파라미터는 최대 7개까지 허용됩니다."/>
+    </module>
+
+    <!-- TODO 주석 허용 (경고만) -->
+    <module name="TodoComment">
+      <property name="severity" value="warning"/>
+      <property name="format" value="(TODO|FIXME|HACK|XXX):"/>
+    </module>
+
+    <!-- 배열 선언 스타일: int[] args (Java 스타일) -->
+    <module name="ArrayTypeStyle"/>
+
+    <!-- long 상수 L 대문자 강제: 10L (소문자 l은 1과 혼동) -->
+    <module name="UpperEll"/>
+
+    <!-- 불필요한 괄호 금지 -->
+    <module name="UnnecessaryParentheses"/>
+
+    <!-- ==============================
+         들여쓰기 규칙
+         ============================== -->
+
+    <module name="Indentation">
+      <property name="basicOffset" value="4"/>
+      <property name="braceAdjustment" value="0"/>
+      <property name="caseIndent" value="4"/>
+      <property name="throwsIndent" value="8"/>
+      <property name="lineWrappingIndentation" value="8"/>
+      <property name="arrayInitIndent" value="4"/>
+    </module>
+
+  </module>
+</module>
