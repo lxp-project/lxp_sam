@@ -1,7 +1,7 @@
 package com.lxp.course.service;
 
-import com.lxp.course.model.CourseDao;
 import com.lxp.course.model.CourseListDto;
+import com.lxp.course.model.CourseRegisterDto;
 import com.lxp.course.repository.CourseRepository;
 
 import java.util.List;
@@ -13,12 +13,23 @@ public class CourseService {
         this.courseRepository = new CourseRepository();
     }
 
-    // 비즈니스 로직 처리 및 Repository 호출
     public List<CourseListDto> getCourseList(int page) {
-        // 페이지 번호 검증 방어 로직
-        if (page < 1) {
-            page = 1;
-        }
+        if (page < 1) page = 1;
         return courseRepository.findAllCoursesWithPaging(page);
+    }
+
+    // (신규) 비즈니스 규칙 검증 및 등록 처리
+    public boolean registerCourse(CourseRegisterDto dto) {
+        // 간단한 검증 로직 예시 (비즈니스 룰)
+        if (dto.getCourseName() == null || dto.getCourseName().trim().isEmpty()) {
+            System.out.println(">> [서비스 오류] 강의명은 필수입니다.");
+            return false;
+        }
+        if (dto.getPrice() != null && dto.getPrice() < 0) {
+            System.out.println(">> [서비스 오류] 가격은 0보다 작을 수 없습니다.");
+            return false;
+        }
+
+        return courseRepository.insertCourse(dto);
     }
 }
