@@ -95,4 +95,23 @@ public class CourseRepository {
             return false;
         }
     }
+
+    public boolean deleteCourse(Long courseId) {
+        String sql = "DELETE FROM Courses WHERE course_id = ?";
+
+        try (Connection conn = JdbcConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setLong(1, courseId);
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0; // 1줄 이상 삭제되었으면 true 반환
+
+        } catch (SQLException e) {
+            // 주의: DDL 구조상 해당 강의에 속한 섹션(Sections) 데이터가 존재할 경우,
+            // 외래키(FK) 참조 무결성 제약조건에 의해 삭제가 거부될 수 있습니다.
+            System.err.println("[Repository 오류] 강의 삭제 실패 (하위 섹션이 존재할 수 있습니다): " + e.getMessage());
+            return false;
+        }
+    }
 }

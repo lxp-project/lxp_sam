@@ -27,4 +27,8 @@ public class CourseController {
     public boolean updateCourse(CourseUpdateDto dto) {
         return courseService.updateCourse(dto);
     }
+
+    public boolean deleteCourse(Long courseId) {
+        return courseService.deleteCourse(courseId);
+    }
 }

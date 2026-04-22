@@ -47,4 +47,13 @@ public class CourseService {
 
         return courseRepository.updateCourse(dto);
     }
+
+    public boolean deleteCourse(Long courseId) {
+        // 검증 로직: ID 유효성 체크
+        if (courseId == null || courseId <= 0) {
+            System.out.println(">> [오류] 유효하지 않은 강의 ID입니다.");
+            return false;
+        }
+        return courseRepository.deleteCourse(courseId);
+    }
 }
