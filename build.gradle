@@ -17,6 +17,8 @@ checkstyleTest {
 group = 'org.sixman'
 version = '1.0-SNAPSHOT'
 
+compileJava.options.encoding = 'UTF-8'
+
 repositories {
     mavenCentral()
 }
@@ -25,6 +27,12 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:6.0.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // postgreSQL JDBC 연결 의존성
+    implementation("org.postgresql:postgresql:42.7.8")
+    // HikariCP 의존성
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
+
 }
 
 test {
