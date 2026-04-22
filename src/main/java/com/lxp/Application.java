@@ -4,6 +4,7 @@ import com.lxp.config.JdbcConnectionManager;
 import com.lxp.course.controller.CourseController;
 import com.lxp.course.model.CourseListDto;
 import com.lxp.course.model.CourseRegisterDto;
+import com.lxp.course.model.CourseUpdateDto;
 
 import java.util.List;
 import java.util.Scanner;
@@ -16,19 +17,21 @@ public class Application {
         System.out.println(">> 강의 플랫폼 콘솔을 시작합니다.");
 
         while (true) {
-            System.out.print("\n[메인] 1.강의 등록  2.전체 조회  0.종료 : ");
+            // 메인 메뉴에 '3.수정' 추가
+            System.out.print("\n[메인] 1.등록  2.조회  3.수정  0.종료 : ");
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1": handleRegisterCourse(); break;
                 case "2": handleViewCourses(); break;
+                case "3": handleUpdateCourse(); break; // 수정 메뉴 연결
                 case "0":
                     System.out.println(">> 종료합니다.");
                     JdbcConnectionManager.closePool();
                     scanner.close();
                     return;
                 default:
-                    System.out.println(">> 0, 1, 2 중 하나를 입력하세요.");
+                    System.out.println(">> 0~3 사이의 숫자를 입력하세요.");
             }
         }
     }
@@ -97,6 +100,36 @@ public class Application {
                 default:
                     System.out.println(">> 잘못된 입력입니다.");
             }
+        }
+    }
+
+    private static void handleUpdateCourse() {
+        System.out.println("\n[강의 수정]");
+        try {
+            System.out.print("수정할 강의ID: ");
+            Long courseId = Long.parseLong(scanner.nextLine());
+
+            System.out.print("새 강의명: ");
+            String courseName = scanner.nextLine();
+
+            System.out.print("새 시간(분): ");
+            Integer courseTime = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("새 가격(원): ");
+            Long price = Long.parseLong(scanner.nextLine());
+
+            System.out.print("새 난이도: ");
+            String difficultLevel = scanner.nextLine();
+
+            CourseUpdateDto dto = new CourseUpdateDto(courseId, courseName, courseTime, price, difficultLevel);
+
+            if (courseController.updateCourse(dto)) {
+                System.out.println(">> 수정 완료!");
+            } else {
+                System.out.println(">> 수정 실패 (해당 강의 ID가 없거나 오류 발생).");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(">> [오류] ID, 시간, 가격은 숫자여야 합니다.");
         }
     }
 }

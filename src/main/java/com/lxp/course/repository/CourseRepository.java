@@ -3,6 +3,7 @@ package com.lxp.course.repository;
 import com.lxp.config.JdbcConnectionManager;
 import com.lxp.course.model.CourseListDto;
 import com.lxp.course.model.CourseRegisterDto;
+import com.lxp.course.model.CourseUpdateDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -68,6 +69,29 @@ public class CourseRepository {
 
         } catch (SQLException e) {
             System.err.println("[Repository 등록 오류] 외래키 제약조건(존재하지 않는 유저/카테고리) 등을 확인하세요: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updateCourse(CourseUpdateDto dto) {
+        String sql = "UPDATE Courses SET course_name = ?, course_time = ?, price = ?, " +
+            "difficult_level = ?, modified_at = CURRENT_TIMESTAMP " +
+            "WHERE course_id = ?";
+
+        try (Connection conn = JdbcConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, dto.getCourseName());
+            pstmt.setInt(2, dto.getCourseTime());
+            pstmt.setLong(3, dto.getPrice());
+            pstmt.setString(4, dto.getDifficultLevel());
+            pstmt.setLong(5, dto.getCourseId());
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0; // 1줄 이상 수정되었으면 true
+
+        } catch (SQLException e) {
+            System.err.println("[Repository 오류] 강의 수정 실패: " + e.getMessage());
             return false;
         }
     }

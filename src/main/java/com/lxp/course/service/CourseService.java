@@ -2,6 +2,7 @@ package com.lxp.course.service;
 
 import com.lxp.course.model.CourseListDto;
 import com.lxp.course.model.CourseRegisterDto;
+import com.lxp.course.model.CourseUpdateDto;
 import com.lxp.course.repository.CourseRepository;
 
 import java.util.List;
@@ -31,5 +32,19 @@ public class CourseService {
         }
 
         return courseRepository.insertCourse(dto);
+    }
+
+    public boolean updateCourse(CourseUpdateDto dto) {
+        // 기본 검증 로직
+        if (dto.getCourseId() == null || dto.getCourseId() <= 0) {
+            System.out.println(">> [오류] 유효하지 않은 강의 ID입니다.");
+            return false;
+        }
+        if (dto.getCourseName() == null || dto.getCourseName().trim().isEmpty()) {
+            System.out.println(">> [오류] 강의명은 필수입니다.");
+            return false;
+        }
+
+        return courseRepository.updateCourse(dto);
     }
 }
